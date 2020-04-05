@@ -1,0 +1,85 @@
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Gatherer</title>
+  <script src="index.js"></script>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .box {
+      width: 10px;
+      height: 11px;
+      display: inline-block;
+      border: 1px solid black;
+    }
+
+    .spoiler {
+      background-color: #333;
+      color: #333;
+      padding: 5px;
+    }
+
+    .spoiler:hover {
+      color: white;
+    }
+
+    p {
+      max-width: 800px;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas width="300" height="200" id="GameCanvas"></canvas>
+
+  <h3>How to play</h3>
+  <p>
+    The user controls the player square using the arrow keys.
+  </p>
+
+  <ul>
+    <li> <span class="box" style="background-color: red;"></span> The red square is the <b>player</b>.</li>
+    <li> <span class="box" style="background-color: #8b4513;"></span> Brown squares are <b>boxes</b>.</li>
+    <li> <span class="box" style="background-color: blue;"></span> Blue squares are <b>stones</b>.</li>
+    <li> <span class="box" style="background-color: #fc0;"></span> Yellow squares are <b>keys</b> <i>or</i> <b>locks</b>
+      -- we fix
+      this
+      in the book.</li>
+    <li> <span class="box" style="background-color: #ccffcc;"></span> Greenish squares are called <b>flux</b>.</li>
+    <li> <span class="box" style="background-color: gray;"></span> Gray squares are <b>walls</b>.</li>
+    <li> <span class="box" style=""></span> White squares are <b>air</b> (empty).</li>
+  </ul>
+
+  <p>
+    If a box or stone is not supported by anything, it falls. The player can push one stone or box at a time, provided
+    it
+    is not obstructed or falling. The path between the box and the lower-right corner is initially obstructed by a lock,
+    so the player has to get a key to remove it. Flux can be "eaten" (removed) by the player by stepping on it.
+  </p>
+
+  <h3>How to win</h3>
+  <p>
+    The objective of the game is to get the box to the lower-right corner, like this:
+  </p>
+  <img src="goal.png" width=150 />
+
+  <p>
+    Solution (put your cursor here):
+    <span class="spoiler">
+      &nbsp;
+      &rarr; &rarr; &rarr; &darr; &nbsp; &nbsp;
+      &darr; &darr; &larr; &uarr; &nbsp; &nbsp;
+      &darr; &larr; &rarr; &uarr; &nbsp; &nbsp;
+      &larr; &larr; &rarr; &rarr; &nbsp; &nbsp;
+      &darr; &rarr; &rarr;
+      &nbsp;
+    </span>
+  </p>
+</body>
+
+</html>
