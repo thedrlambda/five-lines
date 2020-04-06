@@ -14,8 +14,39 @@ enum Tile {
   KEY2, LOCK2
 }
 
-enum Input {
-  UP, DOWN, LEFT, RIGHT
+interface Input {
+  isRight(): boolean;
+  isLeft(): boolean;
+  isUp(): boolean;
+  isDown(): boolean;
+}
+
+class Right implements Input {
+  isRight() { return true; }
+  isLeft() { return false; }
+  isUp() { return false; }
+  isDown() { return false; }
+}
+
+class Left implements Input {
+  isRight() { return false; }
+  isLeft() { return true; }
+  isUp() { return false; }
+  isDown() { return false; }
+}
+
+class Up implements Input {
+  isRight() { return false; }
+  isLeft() { return false; }
+  isUp() { return true; }
+  isDown() { return false; }
+}
+
+class Down implements Input {
+  isRight() { return false; }
+  isLeft() { return false; }
+  isUp() { return false; }
+  isDown() { return true; }
 }
 
 let playerx = 1;
@@ -93,14 +124,14 @@ function handleInputs() {
 }
 
 function handleInput(input: Input) {
-  if (input === Input.RIGHT)
-    moveHorizontal(1);
-  else if (input === Input.LEFT)
+  if (input.isLeft())
     moveHorizontal(-1);
-  else if (input === Input.DOWN)
-    moveVertical(1);
-  else if (input === Input.UP)
+  else if (input.isRight())
+    moveHorizontal(1);
+  else if (input.isUp())
     moveVertical(-1);
+  else if (input.isDown())
+    moveVertical(1);
 }
 
 function updateMap() {
@@ -186,9 +217,9 @@ const UP_KEY = 38;
 const RIGHT_KEY = 39;
 const DOWN_KEY = 40;
 window.addEventListener("keydown", e => {
-  if (e.keyCode === LEFT_KEY || e.key === "a") inputs.push(Input.LEFT);
-  else if (e.keyCode === UP_KEY || e.key === "w") inputs.push(Input.UP);
-  else if (e.keyCode === RIGHT_KEY || e.key === "d") inputs.push(Input.RIGHT);
-  else if (e.keyCode === DOWN_KEY || e.key === "s") inputs.push(Input.DOWN);
+  if (e.keyCode === 37 || e.key === "a") inputs.push(new Left());
+  else if (e.keyCode === 38 || e.key === "w") inputs.push(new Up());
+  else if (e.keyCode === 39 || e.key === "d") inputs.push(new Right());
+  else if (e.keyCode === 40 || e.key === "s") inputs.push(new Down());
 });
 
