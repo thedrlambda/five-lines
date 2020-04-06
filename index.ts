@@ -131,13 +131,9 @@ function update() {
 
 function handleInputs() {
   while (inputs.length > 0) {
-    let current = inputs.pop();
-    handleInput(current);
+    let input = inputs.pop();
+    input.handle();
   }
-}
-
-function handleInput(input: Input) {
-  input.handle();
 }
 
 function updateMap() {
