@@ -196,12 +196,10 @@ class FallStrategy {
   constructor(private falling: boolean) { }
   isFalling() { return this.falling; }
   update(tile: Tile, x: number, y: number) {
-    if (map[y + 1][x].isAir()) {
-      this.falling = true;
+    this.falling = map[y + 1][x].isAir();
+    if (this.falling) {
       map[y + 1][x] = tile;
       map[y][x] = new Air();
-    } else {
-      this.falling = false;
     }
   }
 }
