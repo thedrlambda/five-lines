@@ -25,6 +25,8 @@ interface Tile {
   moveVertical(dy: number): void;
   isStony(): boolean;
   isBoxy(): boolean;
+  drop(): void;
+  rest(): void;
 }
 
 class Air implements Tile {
@@ -42,6 +44,8 @@ class Air implements Tile {
   }
   isStony() { return false; }
   isBoxy() { return false; }
+  drop() { }
+  rest() { }
 }
 
 class Flux implements Tile {
@@ -62,6 +66,8 @@ class Flux implements Tile {
   }
   isStony() { return false; }
   isBoxy() { return false; }
+  drop() { }
+  rest() { }
 }
 
 class Unbreakable implements Tile {
@@ -78,6 +84,8 @@ class Unbreakable implements Tile {
   moveVertical(dy: number) { }
   isStony() { return false; }
   isBoxy() { return false; }
+  drop() { }
+  rest() { }
 }
 
 class Player implements Tile {
@@ -91,6 +99,8 @@ class Player implements Tile {
   moveVertical(dy: number) { }
   isStony() { return false; }
   isBoxy() { return false; }
+  drop() { }
+  rest() { }
 }
 
 interface FallingState {
@@ -129,6 +139,8 @@ class Stone implements Tile {
   moveVertical(dy: number) { }
   isStony() { return true; }
   isBoxy() { return false; }
+  drop() { this.falling = true; }
+  rest() { this.falling = false; }
 }
 
 class Box implements Tile {
@@ -148,6 +160,8 @@ class Box implements Tile {
   moveVertical(dy: number) { }
   isStony() { return false; }
   isBoxy() { return true; }
+  drop() { this.falling = true; }
+  rest() { this.falling = false; }
 }
 
 class Key1 implements Tile {
@@ -170,6 +184,8 @@ class Key1 implements Tile {
   }
   isStony() { return false; }
   isBoxy() { return false; }
+  drop() { }
+  rest() { }
 }
 
 class Lock1 implements Tile {
@@ -186,6 +202,8 @@ class Lock1 implements Tile {
   moveVertical(dy: number) { }
   isStony() { return false; }
   isBoxy() { return false; }
+  drop() { }
+  rest() { }
 }
 
 class Key2 implements Tile {
@@ -208,6 +226,8 @@ class Key2 implements Tile {
   }
   isStony() { return false; }
   isBoxy() { return false; }
+  drop() { }
+  rest() { }
 }
 
 class Lock2 implements Tile {
@@ -224,6 +244,8 @@ class Lock2 implements Tile {
   moveVertical(dy: number) { }
   isStony() { return false; }
   isBoxy() { return false; }
+  drop() { }
+  rest() { }
 }
 
 interface Input {
