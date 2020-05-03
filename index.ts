@@ -139,8 +139,8 @@ class Stone implements Tile {
   moveVertical(dy: number) { }
   isStony() { return true; }
   isBoxy() { return false; }
-  drop() { this.falling = true; }
-  rest() { this.falling = false; }
+  drop() { this.falling = new Falling(); }
+  rest() { this.falling = new Resting(); }
 }
 
 class Box implements Tile {
@@ -160,8 +160,8 @@ class Box implements Tile {
   moveVertical(dy: number) { }
   isStony() { return false; }
   isBoxy() { return true; }
-  drop() { this.falling = true; }
-  rest() { this.falling = false; }
+  drop() { this.falling = new Falling(); }
+  rest() { this.falling = new Resting(); }
 }
 
 class Key1 implements Tile {
@@ -375,9 +375,9 @@ function updateTile(x: number, y: number) {
     map[y + 1][x] = new Box(new Falling());
     map[y][x] = new Air();
   } else if (map[y][x].isFallingStone()) {
-    map[y][x] = new Stone(new Resting());
+    map[y][x].rest();
   } else if (map[y][x].isFallingBox()) {
-    map[y][x] = new Box(new Resting());
+    map[y][x].rest();
   }
 }
 
