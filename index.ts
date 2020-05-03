@@ -164,11 +164,10 @@ class Key implements Tile {
 class Lock implements Tile {
   constructor(
     private color: string,
-    private lock1: boolean,
-    private lock2: boolean) { }
+    private lock1: boolean) { }
   isAir() { return false; }
   isLock1() { return this.lock1; }
-  isLock2() { return this.lock2; }
+  isLock2() { return !this.lock1; }
   draw(g: CanvasRenderingContext2D, x: number, y: number) {
     g.fillStyle = this.color;
     g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
@@ -246,9 +245,9 @@ function transformTile(tile: RawTile) {
     case RawTile.FALLING_BOX: return new Box(new Falling());
     case RawTile.FLUX: return new Flux();
     case RawTile.KEY1: return new Key("#ffcc00", new RemoveLock1());
-    case RawTile.LOCK1: return new Lock("#ffcc00", true, false);
+    case RawTile.LOCK1: return new Lock("#ffcc00", true);
     case RawTile.KEY2: return new Key("#00ccff", new RemoveLock2());
-    case RawTile.LOCK2: return new Lock("#00ccff", false, true);
+    case RawTile.LOCK2: return new Lock("#00ccff", false);
     default: assertExhausted(tile);
   }
 }
