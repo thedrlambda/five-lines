@@ -79,7 +79,10 @@ class Player implements Tile {
 }
 
 class Stone implements Tile {
-  constructor(private falling: boolean) { }
+  private fallStrategy: FallStrategy;
+  constructor(falling: boolean) {
+    this.fallStrategy = new FallStrategy(falling);
+  }
   isAir() { return false; }
   isLock1() { return false; }
   isLock2() { return false; }
@@ -96,18 +99,15 @@ class Stone implements Tile {
   }
   moveVertical(dy: number) { }
   update(x: number, y: number) {
-    if (map[y + 1][x].isAir()) {
-      this.falling = true;
-      map[y + 1][x] = this;
-      map[y][x] = new Air();
-    } else if (this.falling) {
-      this.falling = false;
-    }
+    this.fallStrategy.update(this, x, y);
   }
 }
 
 class Box implements Tile {
-  constructor(private falling: boolean) { }
+  private fallStrategy: FallStrategy;
+  constructor(falling: boolean) {
+    this.fallStrategy = new FallStrategy(falling);
+  }
   isAir() { return false; }
   isLock1() { return false; }
   isLock2() { return false; }
@@ -124,13 +124,7 @@ class Box implements Tile {
   }
   moveVertical(dy: number) { }
   update(x: number, y: number) {
-    if (map[y + 1][x].isAir()) {
-      this.falling = true;
-      map[y + 1][x] = this;
-      map[y][x] = new Air();
-    } else if (this.falling) {
-      this.falling = false;
-    }
+    this.fallStrategy.update(this, x, y);
   }
 }
 
@@ -196,6 +190,20 @@ class Lock2 implements Tile {
   moveHorizontal(dx: number) { }
   moveVertical(dy: number) { }
   update(x: number, y: number) { }
+}
+
+class FallStrategy {
+  constructor(private falling: boolean) { }
+  isFalling() { return this.falling; }
+  update(tile: Tile, x: number, y: number) {
+    if (map[y + 1][x].isAir()) {
+      this.falling = true;
+      map[y + 1][x] = tile;
+      map[y][x] = new Air();
+    } else if (this.falling) {
+      this.falling = false;
+    }
+  }
 }
 
 interface Input {
