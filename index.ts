@@ -277,7 +277,7 @@ class Player {
   }
 }
 let player = new Player();
-let rawMap: RawTile[][] = [
+let rawMap: number[][] = [
   [2, 2, 2, 2, 2, 2, 2, 2],
   [2, 3, 0, 1, 1, 2, 0, 2],
   [2, 4, 2, 6, 1, 2, 0, 2],
@@ -292,7 +292,7 @@ class Map {
     for (let y = 0; y < rawMap.length; y++) {
       this.map[y] = new Array(rawMap[y].length);
       for (let x = 0; x < rawMap[y].length; x++) {
-        this.map[y][x] = transformTile(rawMap[y][x]);
+        this.map[y][x] = transformTile(RAW_TILES[rawMap[y][x]]);
       }
     }
   }
@@ -380,7 +380,7 @@ let map = new Map();
 function assertExhausted(x: never): never {
   throw new Error("Unexpected object: " + x);
 }
-function transformTile(tile: RawTile) {
+function transformTile(tile: RawTile2) {
   switch (tile) {
     case RawTile.AIR: return new Air();
     case RawTile.PLAYER: return new PlayerTile();
