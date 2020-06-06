@@ -259,7 +259,7 @@ let rawMap: RawTile[][] = [
 ];
 class Map {
   private map: Tile[][];
-  transform() {
+  constructor() {
     this.map = new Array(rawMap.length);
     for (let y = 0; y < rawMap.length; y++) {
       this.map[y] = new Array(rawMap[y].length);
@@ -319,29 +319,7 @@ class Map {
     }
   }
 }
-let map = new Map();
-function assertExhausted(x: never): never {
-  throw new Error("Unexpected object: " + x);
-}
-function transformTile(tile: RawTile) {
-  switch (tile) {
-    case RawTile.AIR: return new Air();
-    case RawTile.PLAYER: return new PlayerTile();
-    case RawTile.UNBREAKABLE: return new Unbreakable();
-    case RawTile.STONE: return new Stone(new Resting());
-    case RawTile.FALLING_STONE: return new Stone(new Falling());
-    case RawTile.BOX: return new Box(new Resting());
-    case RawTile.FALLING_BOX: return new Box(new Falling());
-    case RawTile.FLUX: return new Flux();
-    case RawTile.KEY1: return new Key(YELLOW_KEY);
-    case RawTile.LOCK1: return new Lock(YELLOW_KEY);
-    case RawTile.KEY2: return new Key(BLUE_KEY);
-    case RawTile.LOCK2: return new Lock(BLUE_KEY);
-    default: assertExhausted(tile);
-  }
-}
 
-let inputs: Input[] = [];
 
 interface RemoveStrategy {
   check(tile: Tile): boolean;
@@ -369,6 +347,30 @@ class KeyConfiguration {
 }
 const YELLOW_KEY = new KeyConfiguration("#ffcc00", true, new RemoveLock1());
 const BLUE_KEY = new KeyConfiguration("#00ccff", false, new RemoveLock2());
+
+let map = new Map();
+function assertExhausted(x: never): never {
+  throw new Error("Unexpected object: " + x);
+}
+function transformTile(tile: RawTile) {
+  switch (tile) {
+    case RawTile.AIR: return new Air();
+    case RawTile.PLAYER: return new PlayerTile();
+    case RawTile.UNBREAKABLE: return new Unbreakable();
+    case RawTile.STONE: return new Stone(new Resting());
+    case RawTile.FALLING_STONE: return new Stone(new Falling());
+    case RawTile.BOX: return new Box(new Resting());
+    case RawTile.FALLING_BOX: return new Box(new Falling());
+    case RawTile.FLUX: return new Flux();
+    case RawTile.KEY1: return new Key(YELLOW_KEY);
+    case RawTile.LOCK1: return new Lock(YELLOW_KEY);
+    case RawTile.KEY2: return new Key(BLUE_KEY);
+    case RawTile.LOCK2: return new Lock(BLUE_KEY);
+    default: assertExhausted(tile);
+  }
+}
+
+let inputs: Input[] = [];
 
 function update(map: Map, player: Player) {
   handleInputs(map, player);
@@ -406,7 +408,6 @@ function gameLoop(map: Map) {
 }
 
 window.onload = () => {
-  map.transform();
   gameLoop(map);
 }
 
