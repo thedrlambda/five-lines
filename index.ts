@@ -31,17 +31,16 @@ class RawTile2 {
   static readonly LOCK2 = new RawTile2(new Lock2Value());
   private constructor(private value: RawTileValue) { }
 }
-
-enum RawTile {
-  AIR,
-  FLUX,
-  UNBREAKABLE,
-  PLAYER,
-  STONE, FALLING_STONE,
-  BOX, FALLING_BOX,
-  KEY1, LOCK1,
-  KEY2, LOCK2
-}
+const RAW_TILES = [
+  RawTile2.AIR,
+  RawTile2.FLUX,
+  RawTile2.UNBREAKABLE,
+  RawTile2.PLAYER,
+  RawTile2.STONE, RawTile2.FALLING_STONE,
+  RawTile2.BOX, RawTile2.FALLING_BOX,
+  RawTile2.KEY1, RawTile2.LOCK1,
+  RawTile2.KEY2, RawTile2.LOCK2
+];
 
 interface Tile {
   isAir(): boolean;
