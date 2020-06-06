@@ -376,12 +376,8 @@ function createGraphics() {
 
 function draw(map: Map, player: Player) {
   let g = createGraphics();
-  drawMap(map, g);
-  player.draw(g);
-}
-
-function drawMap(map: Map, g: CanvasRenderingContext2D) {
   map.draw(g);
+  player.draw(g);
 }
 
 function gameLoop(map: Map) {
