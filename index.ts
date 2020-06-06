@@ -3,19 +3,72 @@ const TILE_SIZE = 30;
 const FPS = 30;
 const SLEEP = 1000 / FPS;
 
-interface RawTileValue { }
-class AirValue implements RawTileValue { }
-class FluxValue implements RawTileValue { }
-class UnbreakableValue implements RawTileValue { }
-class PlayerValue implements RawTileValue { }
-class StoneValue implements RawTileValue { }
-class FallingStoneValue implements RawTileValue { }
-class BoxValue implements RawTileValue { }
-class FallingBoxValue implements RawTileValue { }
-class Key1Value implements RawTileValue { }
-class Lock1Value implements RawTileValue { }
-class Key2Value implements RawTileValue { }
-class Lock2Value implements RawTileValue { }
+interface RemoveStrategy {
+  check(tile: Tile): boolean;
+}
+class RemoveLock1 implements RemoveStrategy {
+  check(tile: Tile) {
+    return tile.isLock1();
+  }
+}
+class RemoveLock2 implements RemoveStrategy {
+  check(tile: Tile) {
+    return tile.isLock2();
+  }
+}
+
+class KeyConfiguration {
+  constructor(private color: string, private _1: boolean, private removeStrategy: RemoveStrategy) { }
+  setColor(g: CanvasRenderingContext2D) {
+    g.fillStyle = this.color;
+  }
+  is1() { return this._1; }
+  removeLock(map: Map) {
+    map.remove(this.removeStrategy);
+  }
+}
+const YELLOW_KEY = new KeyConfiguration("#ffcc00", true, new RemoveLock1());
+const BLUE_KEY = new KeyConfiguration("#00ccff", false, new RemoveLock2());
+
+interface RawTileValue {
+  transform(): Tile;
+}
+class AirValue implements RawTileValue {
+  transform() { return new Air(); }
+}
+class FluxValue implements RawTileValue {
+  transform() { return new Flux(); }
+}
+class UnbreakableValue implements RawTileValue {
+  transform() { return new Unbreakable(); }
+}
+class PlayerValue implements RawTileValue {
+  transform() { return new PlayerTile(); }
+}
+class StoneValue implements RawTileValue {
+  transform() { return new Stone(new Resting()); }
+}
+class FallingStoneValue implements RawTileValue {
+  transform() { return new Stone(new Falling()); }
+}
+class BoxValue implements RawTileValue {
+  transform() { return new Box(new Resting()); }
+}
+class FallingBoxValue implements RawTileValue {
+  transform() { return new Box(new Falling()); }
+}
+class Key1Value implements RawTileValue {
+  transform() { return new Key(YELLOW_KEY); }
+}
+class Lock1Value implements RawTileValue {
+  transform() { return new Lock(YELLOW_KEY); }
+}
+class Key2Value implements RawTileValue {
+  transform() { return new Key(BLUE_KEY); }
+}
+class Lock2Value implements RawTileValue {
+  transform() { return new Lock(BLUE_KEY); }
+}
 class RawTile2 {
   static readonly AIR = new RawTile2(new AirValue());
   static readonly FLUX = new RawTile2(new FluxValue());
@@ -30,6 +83,9 @@ class RawTile2 {
   static readonly KEY2 = new RawTile2(new Key2Value());
   static readonly LOCK2 = new RawTile2(new Lock2Value());
   private constructor(private value: RawTileValue) { }
+  transform() {
+    return this.value.transform();
+  }
 }
 const RAW_TILES = [
   RawTile2.AIR,
@@ -348,54 +404,9 @@ class Map {
   }
 }
 
-
-interface RemoveStrategy {
-  check(tile: Tile): boolean;
-}
-class RemoveLock1 implements RemoveStrategy {
-  check(tile: Tile) {
-    return tile.isLock1();
-  }
-}
-class RemoveLock2 implements RemoveStrategy {
-  check(tile: Tile) {
-    return tile.isLock2();
-  }
-}
-
-class KeyConfiguration {
-  constructor(private color: string, private _1: boolean, private removeStrategy: RemoveStrategy) { }
-  setColor(g: CanvasRenderingContext2D) {
-    g.fillStyle = this.color;
-  }
-  is1() { return this._1; }
-  removeLock(map: Map) {
-    map.remove(this.removeStrategy);
-  }
-}
-const YELLOW_KEY = new KeyConfiguration("#ffcc00", true, new RemoveLock1());
-const BLUE_KEY = new KeyConfiguration("#00ccff", false, new RemoveLock2());
-
 let map = new Map();
-function assertExhausted(x: never): never {
-  throw new Error("Unexpected object: " + x);
-}
 function transformTile(tile: RawTile2) {
-  switch (tile) {
-    case RawTile.AIR: return new Air();
-    case RawTile.PLAYER: return new PlayerTile();
-    case RawTile.UNBREAKABLE: return new Unbreakable();
-    case RawTile.STONE: return new Stone(new Resting());
-    case RawTile.FALLING_STONE: return new Stone(new Falling());
-    case RawTile.BOX: return new Box(new Resting());
-    case RawTile.FALLING_BOX: return new Box(new Falling());
-    case RawTile.FLUX: return new Flux();
-    case RawTile.KEY1: return new Key(YELLOW_KEY);
-    case RawTile.LOCK1: return new Lock(YELLOW_KEY);
-    case RawTile.KEY2: return new Key(BLUE_KEY);
-    case RawTile.LOCK2: return new Lock(BLUE_KEY);
-    default: assertExhausted(tile);
-  }
+  return tile.transform();
 }
 
 let inputs: Input[] = [];
