@@ -1,3 +1,7 @@
 *.js
 *.sh
 .vscode
+/c#/five-lines/obj/
+/c#/five-lines/bin/
+/c#/five-lines/.vs/
+/c#/five-lines/five-lines.csproj.user
