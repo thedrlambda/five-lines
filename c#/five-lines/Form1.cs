@@ -192,13 +192,7 @@ namespace five_lines
 
         public void draw()
         {
-            Controls.Clear();
-            //var canvas = document.getElementById("GameCanvas") as HTMLCanvasElement;
-            //var g = canvas.getContext("2d");
-
-            //g.clearRect(0, 0, canvas.width, canvas.height);
-            System.Drawing.Graphics formGraphics;
-            formGraphics = this.CreateGraphics();
+            var formGraphics = CreateGraphics();
             
             // Draw _map
             for (var y = 0; y < _map.GetLength(0); y++)
