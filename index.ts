@@ -118,6 +118,11 @@ function draw() {
 
   g.clearRect(0, 0, canvas.width, canvas.height);
 
+  drawMap(g);
+  drawPlayer(g);
+}
+
+function drawMap(g: CanvasRenderingContext2D) {
   // Draw map
   for (let y = 0; y < map.length; y++) {
     for (let x = 0; x < map[y].length; x++) {
@@ -138,10 +143,12 @@ function draw() {
         g.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
   }
+}
 
-  // Draw player
-  g.fillStyle = "#ff0000";
-  g.fillRect(playerx * TILE_SIZE, playery * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+function drawPlayer(g: CanvasRenderingContext2D) {
+    // Draw player
+    g.fillStyle = "#ff0000";
+    g.fillRect(playerx * TILE_SIZE, playery * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 }
 
 function gameLoop() {
